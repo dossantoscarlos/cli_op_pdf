@@ -8,3 +8,4 @@ compress_pdf
 build
 pdf
 *.log
+main

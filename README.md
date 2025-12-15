@@ -26,16 +26,16 @@ Para executar a build basta rodar o script `build.cmd` presente no diretorio __S
 ## Modo de Uso do CLI
 
 Sintaxe basica:
-`cli_po_pdf.exe --input document.pdf --option 1 --pages 2,3`
+`cli_po_pdf.exe -input document.pdf -option 1 -pages 2,3`
 
 - Parametros:
-  - `--input` : responsavel por receber o arquivo original do pdf
-  - `--option`: escolha das funções disponiveis.
+  - `-input` : responsavel por receber o arquivo original do pdf
+  - `-option`: escolha das funções disponiveis.
     > 1 - Extract PDF
       2 - Merge PDF
       3 - Compress PDF
       4 - Split PDF
-  - `--pages`: use os intervalos que deseja imprimir no novo pdf.
+  - `-pages`: use os intervalos que deseja imprimir no novo pdf.
   
-  __Obs:__ Somente o merge aceita uma lista separada por virgula para o `--input` : 
-    >`cli_po_pdf.exe --input primeiro.pdf, segundo.pdf --option 1 --pages 2,3`
+  __Obs:__ Somente o merge aceita uma lista separada por virgula para o `-input` : 
+    >`cli_po_pdf.exe -input primeiro.pdf,segundo.pdf -option 1 -pages 2,3`
