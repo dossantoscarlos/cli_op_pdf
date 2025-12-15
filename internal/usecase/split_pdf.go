@@ -15,7 +15,7 @@ func SplitPDF(params model.Pdf) ([]string, error) {
 	log.Default().Println("SplitPDF")
 
 	if len(params.PageRange) == 0 {
-		return nil, fmt.Errorf("Error ao extrair pagina")
+		return nil, fmt.Errorf("error ao extrair pagina")
 	}
 
 	if len(params.PageRange) == 1 && params.PageRange[0] == "all" {
@@ -26,7 +26,7 @@ func SplitPDF(params model.Pdf) ([]string, error) {
 		params.InputValueName, params.OutputValueName,
 		params.PageRange, nil)
 	if err != nil {
-		return nil, fmt.Errorf("%v", err)
+		return nil, fmt.Errorf("1%v", err.Error())
 	}
 
 	// 2. Fazer o merge dos arquivos no diretório
@@ -36,7 +36,7 @@ func SplitPDF(params model.Pdf) ([]string, error) {
 	// Listar todos os arquivos no diretório
 	files, err := os.ReadDir(directory)
 	if err != nil {
-		return nil, fmt.Errorf("Erro ao ler o diretório: %v", err)
+		return nil, fmt.Errorf("erro ao ler o diretório: %v", err)
 	}
 
 	// Adicionar arquivos ao slice filesToMerge na ordem correta

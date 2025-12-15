@@ -6,12 +6,14 @@ import (
 	"os"
 )
 
-func VerificaDirectory(dir string) {
+func VerificaDirectory(dir string) error {
 	_, err := directory(dir)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
-		return
+		return err
 	}
+
+	return nil
 }
 
 func directory(pathName string) (string, error) {
@@ -28,7 +30,38 @@ func directory(pathName string) (string, error) {
 func directoryExists(path string) bool {
 	dir, err := os.Stat(path)
 	if os.IsNotExist(err) {
-		return false // O diretório não existe
+		return false
 	}
 	return dir.IsDir()
+}
+
+func IsDirectory(dir string) bool {
+	return directoryExists(dir)
+}
+
+func Files(dir string) (string, error) {
+	var files string
+	var nextFiles string
+
+	path, err := os.ReadDir(dir)
+
+	if err != nil {
+		return "", err
+	}
+
+	for _, f := range path {
+		if len(files) > 0 {
+			nextFiles = ",."
+		} else {
+			nextFiles = "."
+		}
+
+		files += nextFiles + SeparatorPath() + dir + SeparatorPath() + f.Name()
+	}
+
+	return files, nil
+}
+
+func SeparatorPath() string {
+	return string(os.PathSeparator)
 }

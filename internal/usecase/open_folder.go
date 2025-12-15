@@ -13,8 +13,8 @@ func OpenFolder(path string) error {
 
 	currentDir, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("Erro ao obter o diretório de trabalho: %v", err)
-
+		log.Fatalf("erro ao obter o diretório de trabalho: %v", err)
+		return err
 	}
 
 	path = currentDir + string(os.PathSeparator) + path
@@ -28,7 +28,7 @@ func OpenFolder(path string) error {
 	case "linux":
 		cmd = exec.Command("xdg-open", path) // Para Linux
 	default:
-		return fmt.Errorf("Sistema operacional não suportado")
+		return fmt.Errorf("sistema operacional não suportado")
 	}
 
 	return cmd.Start()

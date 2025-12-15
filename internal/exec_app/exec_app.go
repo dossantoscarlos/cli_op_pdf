@@ -2,7 +2,6 @@ package execapp
 
 import (
 	"log"
-	"os"
 	"strings"
 
 	"github.com/dossantoscarlos/genpdf_cli/internal/model"
@@ -11,19 +10,43 @@ import (
 )
 
 func MergePDF(pdf model.Pdf) {
-	pdf.OutputValueName = "merge_pdf" + separatorPath()
-	util.VerificaDirectory(pdf.OutputValueName)
+	var path string
+
+	pdf.OutputValueName = "merge_pdf" + util.SeparatorPath()
+
+	if err := util.VerificaDirectory(pdf.OutputValueName); err != nil {
+		log.Default().Fatalf("error em verificar diretorio: %v\n", err)
+		return
+	}
+
+	if util.IsDirectory(pdf.InputValueName) {
+		var err error
+
+		path = pdf.InputValueName
+
+		pdf.InputValueName, err = util.Files(path)
+		log.Default().Println(pdf.InputValueName)
+
+		if err != nil {
+			log.Default().Fatalf("lista de arquivo falhou: %v", err)
+			return
+		}
+	}
+
 	inputValueName := strings.Split(pdf.InputValueName, ",")
+
+	log.Default().Printf("\n %s \n", inputValueName[1])
+
 	nameOutput, err := usecase.MergePDFs(inputValueName, pdf.OutputValueName)
 	if err != nil {
-		log.Fatalf("Err: %v", err)
+		log.Fatalf("%v", err)
 		return
 	}
 	usecase.OpenFileInBrowser(nameOutput)
 }
 
 func ExtractPDF(pdf model.Pdf) {
-	pdf.OutputValueName = "pdf_extract" + separatorPath()
+	pdf.OutputValueName = "pdf_extract" + util.SeparatorPath()
 	util.VerificaDirectory(pdf.OutputValueName)
 	nameOutput, err := usecase.ExtractPages(pdf)
 	if err != nil {
@@ -34,7 +57,7 @@ func ExtractPDF(pdf model.Pdf) {
 }
 
 func CompressPDF(pdf model.Pdf) {
-	pdf.OutputValueName = "compress_pdf" + separatorPath()
+	pdf.OutputValueName = "compress_pdf" + util.SeparatorPath()
 	util.VerificaDirectory(pdf.OutputValueName)
 	nameOutput, err := usecase.CompressPDF(pdf.InputValueName, pdf.OutputValueName)
 	if err != nil {
@@ -45,7 +68,7 @@ func CompressPDF(pdf model.Pdf) {
 }
 
 func SplitPDF(pdf model.Pdf) {
-	pdf.OutputValueName = "split_pdf" + separatorPath()
+	pdf.OutputValueName = "split_pdf" + util.SeparatorPath()
 	util.VerificaDirectory(pdf.OutputValueName)
 	_, err := usecase.SplitPDF(pdf)
 	if err != nil {
@@ -53,8 +76,4 @@ func SplitPDF(pdf model.Pdf) {
 		return
 	}
 	usecase.OpenFolder(pdf.OutputValueName)
-}
-
-func separatorPath() string {
-	return string(os.PathSeparator)
 }
